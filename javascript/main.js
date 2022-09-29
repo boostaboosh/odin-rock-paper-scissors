@@ -20,4 +20,55 @@ function getComputerChoice() {
     }
 }
 
-console.log(getComputerChoice());
+function playRound(playerChoice, computerChoice) {
+    //return a string that declares the winner of the round of rock paper scissors and makes the playerChoice parameter case insensitive.
+    //1) simpler: return a string
+    //2) return the winner between rock and paper
+    //3) return the winner between rock, paper, and scissors
+    //4) mate the playerChoice parameter case insensitive
+    playerChoice = playerChoice.toLowerCase();
+    computerChoice = computerChoice.toLowerCase();
+
+    let winner;
+    
+    if (playerChoice === "rock") {
+        switch (true) {
+            case computerChoice === "paper":
+                winner = "Looooooooooser.";
+                break;
+            case computerChoice === "rock":
+                winner = "La mujer bebe la leche. You draw."
+                break;
+            case computerChoice === "scissors":
+                winner = "flawless victory.";
+                break;
+            default:
+                winner = "Unknown winner.";
+        }
+    } else if (playerChoice === "paper") {
+        switch (true) {
+            case computerChoice === "rock":
+                winner = "Well done monkey brain, you win.";
+                break;
+            case computerChoice === "paper":
+                winner = "No one wins. You draw hombre.";
+                break;
+            case computerChoice === "scissors":
+                winner = "Ha ha, you lose.";
+                break;
+            default:
+                winner = "No one wins. You all die.";
+        }
+    } else if (playerChoice === "scissors") {
+        if (computerChoice === "rock") {
+            winner = "You lose therefore you suck.";
+        } else if (computerChoice === "paper"){
+            winner = "History is written by the victors, and you won.";
+        } else if (computerChoice === "scissors"){
+            winner = "There are no winners, only losers. You draw";
+        }
+    }
+
+    return winner;
+}
+
