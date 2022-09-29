@@ -72,7 +72,7 @@ function playRound(playerChoice, computerChoice) {
     return roundResult;
 }
 
-let game = function() {
+let playGame = function() {
     // Play a 5 round game that keeps score and reports a winner or loser at the end.
     let playerWins = 0;
     let computerWins = 0;
@@ -91,10 +91,10 @@ let game = function() {
         }
     }
 
-    outputResult();
+    outputGameResult(playerWins, computerWins);
 }
 
-outputResult = function(playerWins, computerWins) {
+outputGameResult = function(playerWins, computerWins) {
     // Calculate who won the game and output the result.
     if (playerWins > computerWins) {
         console.log("Human wins! You won the game.");
@@ -105,4 +105,4 @@ outputResult = function(playerWins, computerWins) {
     }
 }
 
-game();
+playGame();
