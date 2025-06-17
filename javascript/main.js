@@ -8,19 +8,14 @@ function getComputerChoice() {
     switch (true) {
         case (randomNumberBetweenZeroAndThree<1):
             return "rock";
-            break;
         case (randomNumberBetweenZeroAndThree >= 1 && randomNumberBetweenZeroAndThree < 2):
             return "paper";
-            break;
         case (randomNumberBetweenZeroAndThree >= 2 && randomNumberBetweenZeroAndThree < 3):
             return "scissors";
-            break;
-        default:
-            return("random number is >= 3");
     }
 }
 
-function playRound(playerChoice, computerChoice) {
+function getRoundResult(playerChoice, computerChoice) {
     // Return a string that declares the winner of the round of rock paper scissors and makes the playerChoice parameter case insensitive.
     // 1) Simpler: Return a string.
     // 2) Return the winner between rock and paper.
@@ -42,8 +37,6 @@ function playRound(playerChoice, computerChoice) {
             case computerChoice === "scissors":
                 roundResult = "win";
                 break;
-            default:
-                roundResult = "unknown";
         }
     } else if (playerChoice === "paper") {
         switch (true) {
@@ -56,8 +49,6 @@ function playRound(playerChoice, computerChoice) {
             case computerChoice === "scissors":
                 roundResult = "loss";
                 break;
-            default:
-                roundResult = "unknown";
         }
     } else if (playerChoice === "scissors") {
         if (computerChoice === "rock") {
@@ -72,37 +63,122 @@ function playRound(playerChoice, computerChoice) {
     return roundResult;
 }
 
-let playGame = function() {
-    // Play a 5 round game that keeps score and reports a winner or loser at the end.
-    let playerWins = 0;
-    let computerWins = 0;
+function setupButtons() 
+{
+    const rockButton = document.querySelector("#rock")
+    rockButton.addEventListener("click", () => {
+        userChoice = "rock"
+        result = getRoundResult(userChoice, getComputerChoice())
+        updateScore(result)
+        outputResult(result)
+    })
 
-    for (games = 0; games < 5; games ++) {
-        let userChoice = prompt("Rock, Paper, or Scissors?");
-        let result = playRound(userChoice, getComputerChoice());
+    let paperButton = document.querySelector("#paper")
+    paperButton.addEventListener("click", () => {
+        userChoice = "paper"
+        result = getRoundResult(userChoice, getComputerChoice())
+        updateScore(result)
+        outputResult(result)
+    })
+
+    let scissorsButton = document.querySelector("#scissors")
+    scissorsButton.addEventListener("click", () => {
+        userChoice = "scissors"
+        result = getRoundResult(userChoice, getComputerChoice())
+        updateScore(result)
+        outputResult(result)
+    })
+}
+
+function updateScore(result)
+{
+    if (result === "win") { 
+        playerWins++ 
+        document.querySelector("#player-score").textContent = "player wins: " + playerWins
+    }
+    else if (result === "loss") { 
+        computerWins++ 
+        document.querySelector("#computer-score").textContent = "computer wins: " + computerWins
+    }
+}
+
+function setupRunningScore()
+{
+    const playerScoreDiv = document.createElement("div")
+    playerScoreDiv.setAttribute("id", "player-score")
+    playerScoreDiv.textContent = "player wins: " + playerWins
+    
+    document.body.appendChild(playerScoreDiv)
+
+    const computerScoreDiv = document.createElement("div")
+    computerScoreDiv.setAttribute("id", "computer-score")
+    computerScoreDiv.textContent = "computer wins: " + computerWins
+
+    document.body.insertBefore(computerScoreDiv, playerScoreDiv)
+}
+
+function outputResult(result)
+{
+    if (playerWins >= 5 || computerWins >= 5) {
+        outputGameResult(playerWins, computerWins)
+        deactivateButtons() // if not deactivated players can keep pressing to update win counters, i.e. change state and update result
+    }
+    else {
         if (result === "win") {
-            playerWins ++;
             console.log("You win this battle, but you will lose this war.");
+            outputWinResult()
         } else if (result === "loss") {
-            computerWins ++;
             console.log("You lose therefore you suck.");
+            outputLossResult()
         } else if (result === "draw") {
             console.log("Draw. No one wins. You all die.");
+            outputDrawResult()
         }
     }
+}
 
-    outputGameResult(playerWins, computerWins);
+function outputWinResult()
+{
+    const outputDiv = document.querySelector("div.display")
+    outputDiv.textContent = "You win this battle, but you will lose this war."
+}
+
+function outputLossResult()
+{
+    const outputDiv = document.querySelector("div.display")
+    outputDiv.textContent = "You lose therefore you suck."
+}
+
+function outputDrawResult()
+{
+    const outputDiv = document.querySelector("div.display")
+    outputDiv.textContent = "Draw. No one wins. You all die."
 }
 
 outputGameResult = function(playerWins, computerWins) {
+    const outputDiv = document.querySelector("div.display")
+
     // Calculate who won the game and output the result.
     if (playerWins > computerWins) {
-        console.log("Human wins! You won the game.");
+        outputDiv.textContent = "Human wins! You won the game."
     } else if (computerWins > playerWins) {
-        console.log("Computer wins! You lost the game.");
+        outputDiv.textContent = "Computer wins! You lost the game."
     } else if (computerWins === playerWins){
-        console.log("Humans and Computers tie! You drew the game.");
+        outputDiv.textContent = "Humans and Computers tie! You drew the game."
     }
 }
 
-playGame();
+function deactivateButtons()
+{
+    let buttons = document.querySelectorAll("button");
+    for (const button of buttons) 
+    {
+        button.disabled = true
+    }
+}
+
+let playerWins = 0;
+let computerWins = 0;
+
+setupButtons()
+setupRunningScore()
